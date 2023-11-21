@@ -34,6 +34,7 @@ export default function Home() {
             <div className="flex flex-col space-y-4 items-center">
                 <h2 className="text-primary text-2xl">Welcome</h2>
                 <ButtonFill
+                    href="/register"
                     className="bg-gradient-to-r from-primary from-30% to-secondary mt-2 !px-14 !py-3 !rounded-3xl "
                     labelClassName="!text-xl"
                     title="Create Your Account"

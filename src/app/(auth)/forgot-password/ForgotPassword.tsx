@@ -1,4 +1,5 @@
 "use client";
+import ButtonBack from "@/components/Button/ButtonBack";
 import ButtonFill from "@/components/Button/ButtonFill";
 import {} from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
@@ -36,20 +37,25 @@ export default function ForgotPassword() {
     };
     return (
         <div className="flex flex-col space-y-12 pb-6">
-            <div className="flex flex-col space-y-2 items-center mt-24">
-                <Image
-                    width={60}
-                    height={76}
-                    src={"/drop-logo.png"}
-                    alt="Clear"
-                />
-                <Image
-                    width={200}
-                    height={60}
-                    src={"/clear-text.png"}
-                    alt="Clear"
-                />
+            <div className="flex flex-row justify-between items-center mt-24">
+                <ButtonBack />
+                <div className="flex flex-row space-x-2 items-center ">
+                    <Image
+                        width={50}
+                        height={65}
+                        src={"/drop-logo.png"}
+                        alt="Clear"
+                    />
+                    <Image
+                        width={200}
+                        height={60}
+                        src={"/clear-text.png"}
+                        alt="Clear"
+                    />
+                </div>
+                <div className="w-10" />
             </div>
+
 
             <div className="flex flex-col space-y-4 items-center">
                 <h2 className="text-primary text-2xl">Reset Password</h2>

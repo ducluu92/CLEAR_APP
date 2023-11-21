@@ -43,9 +43,8 @@ service.interceptors.response.use(
     (response) => {
         // console.log("Response:", JSON.stringify(response, null, 2));
         const res = response.data;
-        console.log("123", res);
         // if the custom code is not 200, it is judged as an error.
-        if (response.status !== 200) {
+        if (response.status !== 200 || !res.success) {
             //   Message({
             //     message: res.message || 'Error',
             //     type: 'error',
@@ -70,7 +69,7 @@ service.interceptors.response.use(
                 // })
             }
 
-            return Promise.reject({ message: res.message || "Xảy ra lỗi!" });
+            return Promise.reject({ message: res.errors?.message || res.message || "Error!" });
         } else {
             return res;
         }

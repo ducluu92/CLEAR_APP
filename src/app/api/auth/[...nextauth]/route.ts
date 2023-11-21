@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { AxiosError } from "axios";
 import BaseConstant from "@/constants/BaseConstant";
 import { JWT } from "next-auth/jwt";
+import AuthApi from "@/app/(auth)/login/services/AuthApi";
 // import AuthApi from "@/app/(auth)/auth/login/services/AuthApi";
 // import { Account } from '@/types/next-auth';
 export const authConfig = {
@@ -26,8 +27,9 @@ export const authConfig = {
                     throw new Error("Email and password required");
                 }
                 try {
-                    // console.log({credentials})
+                    console.log({credentials})
                     // const res = await AuthApi.login({email: credentials.email, password: credentials.password});
+                    // if()
                     // console.log({res})
                     const user = {
                         id: credentials.password,
@@ -37,7 +39,7 @@ export const authConfig = {
                 } catch (error) {
                     const err = error as AxiosError<any>;
                     console.log("error", JSON.stringify(error));
-                    throw new Error(err?.response?.data?.message);
+                    throw new Error(err?.message || 'Error');
                 }
             },
         }),

@@ -1,9 +1,12 @@
 "use client";
 import ButtonFill from "@/components/Button/ButtonFill";
+import CookieUtils from "@/utils/CookieUtils";
 import {} from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 type FieldType = {
     email?: string;
@@ -11,28 +14,35 @@ type FieldType = {
     // remember?: string;
 };
 export default function Login() {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const onFinishFailed = (errorInfo: any) => {
         console.log("Failed:", errorInfo);
     };
     const onFinished = async (params: any) => {
-        // try {
-        //     setIsLoading(true);
-        //     const loginRes = await AuthApi.login({ ...params });
-        //     console.log({loginRes})
-        //     if (loginRes && loginRes.success) {
-        //         CookieUtils.setToken(loginRes.data.access_token)
-        //         await signIn("credentials", { ...params, password: loginRes.data.access_token , redirect: false});
-        //         message.success("Welcome!");
-        //         router.push('/')
-        //     }else{
-        //         message.error("User credentials are not valid");
-        //     }
-        // } catch (err: any) {
-        //     message.error("User credentials are not valid");
-        // } finally {
-        //     setIsLoading(false);
-        // }
+        try {
+            setIsLoading(true);
+            // const loginRes = await AuthApi.login({ ...params });
+            // console.log({loginRes})
+            // if (loginRes && loginRes.success) {
+            // CookieUtils.setToken(loginRes.data.access_token)
+            const res: any = await signIn("credentials", {
+                ...params,
+                redirect: false,
+            });
+            console.log({ res });
+
+            if (res.ok) {
+                message.success("Welcome!");
+                router.push("/home");
+            } else {
+                message.error("User credentials are not valid");
+            }
+        } catch (err: any) {
+            message.error("User credentials are not valid");
+        } finally {
+            setIsLoading(false);
+        }
     };
     return (
         <div className="flex flex-col space-y-12 pb-6">
@@ -112,7 +122,10 @@ export default function Login() {
                             </Form.Item>
                         </Form>
                         <div className="text-center py-5">
-                            <Link className="text-secondary" href="/forgot-password">
+                            <Link
+                                className="text-secondary"
+                                href="/forgot-password"
+                            >
                                 Forgot Password
                             </Link>
                         </div>

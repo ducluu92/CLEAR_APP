@@ -11,11 +11,13 @@ type Props = {
     labelClassName?: string;
     htmlType?: string
     loading?: boolean
+    disabled?: boolean
 };
 type CompProps = {
     href?: string;
     htmlType?: string;
     loading?: boolean;
+    disabled?: boolean;
     onClick?: () => void;
 };
 export default function ButtonFill({
@@ -27,6 +29,7 @@ export default function ButtonFill({
     labelClassName,
     htmlType,
     loading,
+    disabled,
     ...props
 }: Props) {
     const Comp = href ? Link : Button;
@@ -43,20 +46,23 @@ export default function ButtonFill({
     if (loading) {
         propComps.loading = loading;
     }
+    if (disabled) {
+        propComps.disabled = disabled;
+    }
     return (
         // @ts-ignore
         <Comp
             className={
-                "!rounded-lg border-none !p-[5px] align-middle !h-auto shadow-md drop-shadow-lg shadow-slate-200 " +
+                "!rounded-lg border-none !p-[5px] align-middle !h-auto shadow-md drop-shadow-lg shadow-slate-200 block " +
                 className
             }
             {...propComps}
             {...props}
         >
-            <div className="items-center flex flex-row justify-center">
-                <label className={"text-xs text-white " + labelClassName}>
+            <p className="items-center flex flex-row justify-center">
+                <span className={"text-xs text-white " + labelClassName}>
                     {title}
-                </label>
+                </span>
                 {showIcon && (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +79,7 @@ export default function ButtonFill({
                         />
                     </svg>
                 )}
-            </div>
+            </p>
         </Comp>
     );
 }

@@ -1,35 +1,50 @@
 "use client";
+import CatalogConstant from "@/app/catalog/constants/CatalogConstant";
+import useCatalogSWR from "@/app/catalog/hook/useCatalogSWR";
 import ButtonBack from "@/components/Button/ButtonBack";
 import ButtonFill from "@/components/Button/ButtonFill";
 import {} from "@ant-design/icons";
-import { Button, DatePicker, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import AuthApi from "../login/services/AuthApi";
+import { useRouter } from "next/navigation";
+import MessageUtils from "@/utils/MessageUtils";
+import { DATE_SERVER_FORMAT } from "@/utils/DateTimeUtils";
 
 export default function Register() {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { data: countries } = useCatalogSWR(CatalogConstant.TYPE_COUNTRIES);
+    const { data: states } = useCatalogSWR(CatalogConstant.TYPE_STATES);
+    const { data: genderIdentities } = useCatalogSWR(
+        CatalogConstant.TYPE_GENDER_IDENTITIES
+    );
+    const { data: sexes } = useCatalogSWR(CatalogConstant.TYPE_SEXES);
     const onFinishFailed = (errorInfo: any) => {
         console.log("Failed:", errorInfo);
     };
     const onFinished = async (params: any) => {
-        // try {
-        //     setIsLoading(true);
-        //     const loginRes = await AuthApi.login({ ...params });
-        //     console.log({loginRes})
-        //     if (loginRes && loginRes.success) {
-        //         CookieUtils.setToken(loginRes.data.access_token)
-        //         await signIn("credentials", { ...params, password: loginRes.data.access_token , redirect: false});
-        //         message.success("Welcome!");
-        //         router.push('/')
-        //     }else{
-        //         message.error("User credentials are not valid");
-        //     }
-        // } catch (err: any) {
-        //     message.error("User credentials are not valid");
-        // } finally {
-        //     setIsLoading(false);
-        // }
+        try {
+            if (isLoading) return;
+            setIsLoading(true);
+            const data = {...params, dob: params.dob.format(DATE_SERVER_FORMAT)}
+            const loginRes = await AuthApi.register(data);
+            console.log({ loginRes });
+            if (loginRes && loginRes.success) {
+                message.success(
+                    "Registration successful, please check your email for verification!"
+                );
+                router.push("/");
+            } else {
+                MessageUtils.showResponseError(loginRes?.errors)
+            }
+        } catch (err: any) {
+            MessageUtils.showResponseError(err)
+        } finally {
+            setIsLoading(false);
+        }
     };
     return (
         <div className="flex flex-col space-y-8 pb-6">
@@ -67,9 +82,9 @@ export default function Register() {
                             autoComplete="off"
                             layout={"vertical"}
                         >
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label="First Name"
-                                name="email"
+                                name="first_name"
                                 rules={[
                                     {
                                         required: true,
@@ -80,33 +95,8 @@ export default function Register() {
                             >
                                 <Input size="large" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
-                                label="Last Name"
-                                name="email"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input your last name!",
-                                    },
-                                ]}
-                            >
-                                <Input size="large" />
-                            </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
-                                label={
-                                    <span className="text-sm">First Name</span>
-                                }
-                                name="first_name"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input first name!",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="First name" />
-                            </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Middle Name Initial
@@ -116,7 +106,7 @@ export default function Register() {
                             >
                                 <Input placeholder="Middle initial name" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">Last Name</span>
                                 }
@@ -131,19 +121,19 @@ export default function Register() {
                                 <Input placeholder="last name" />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Date of Birth
                                     </span>
                                 }
                                 name="dob"
-                                // rules={[
-                                //     {
-                                //         required: true,
-                                //         message: "Please input date of birth!",
-                                //     },
-                                // ]}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input date of birth!",
+                                    },
+                                ]}
                             >
                                 {/* <Input /> */}
                                 <DatePicker
@@ -152,22 +142,22 @@ export default function Register() {
                                 />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">Pronouns</span>
                                 }
                                 name="pronouns"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input pronouns!",
-                                    },
-                                ]}
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: "Please input pronouns!",
+                                //     },
+                                // ]}
                             >
                                 <Input placeholder="Pronouns" />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm">Sex</span>}
                                 name="sex_id"
                                 rules={[
@@ -177,15 +167,15 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                {/* <Select
+                                <Select
                                     options={sexes?.data?.map((it) => ({
                                         label: it.name,
                                         value: it.id,
                                     }))}
                                     placeholder="Sex"
-                                /> */}
+                                />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Gender Identity
@@ -200,17 +190,17 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                {/* <Select
+                                <Select
                                     options={genderIdentities?.data?.map(
                                         (it) => ({
                                             label: it.name,
                                             value: it.id,
                                         })
                                     )}
-                                    placeholder="Country"
-                                /> */}
+                                    placeholder="Gender"
+                                />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm">Country</span>}
                                 name="country_id"
                                 rules={[
@@ -220,16 +210,16 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                {/* <Select
+                                <Select
                                     options={countries?.data?.map((it) => ({
                                         label: it.name,
                                         value: it.id,
                                     }))}
                                     placeholder="Country"
-                                /> */}
+                                />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Address Line 1
@@ -245,7 +235,7 @@ export default function Register() {
                             >
                                 <Input placeholder="Address Line 1" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Address Line 2 (apt, suite, etc)
@@ -253,24 +243,36 @@ export default function Register() {
                                 }
                                 name="address_line_2"
                             >
-                                <Input placeholder="Address Line 1" />
+                                <Input placeholder="Address Line 2" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">Zip Code</span>
                                 }
                                 name="zipcode"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input zip code!",
+                                    },
+                                ]}
                             >
                                 <Input placeholder="Zip Code" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm">City</span>}
                                 name="city"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input city!",
+                                    },
+                                ]}
                             >
                                 <Input placeholder="City" />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm">State</span>}
                                 name="state"
                                 rules={[
@@ -280,16 +282,16 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                {/* <Select
+                                <Select
                                     options={states?.data?.map((it) => ({
                                         label: it.name,
                                         value: it.name,
                                     }))}
                                     placeholder="Country"
-                                /> */}
+                                />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm"> Email</span>}
                                 name="email"
                                 rules={[
@@ -299,12 +301,10 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                <Input
-                                    placeholder="Please input email"
-                                />
+                                <Input placeholder="Please input email" />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm"> Phone</span>}
                                 name="phone"
                                 rules={[
@@ -314,28 +314,26 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                <Input
-                                    placeholder="Please input phone number"
-                                />
+                                <Input placeholder="Please input phone number" />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Stage Name 1
                                     </span>
                                 }
                                 name="stage_name_1"
-                                // rules={[
-                                //     {
-                                //         required: true,
-                                //         message: "Please input Stage Name 1!",
-                                //     },
-                                // ]}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input Stage Name 1!",
+                                    },
+                                ]}
                             >
                                 <Input placeholder="Stage Name 1" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Stage Name 2
@@ -345,7 +343,7 @@ export default function Register() {
                             >
                                 <Input placeholder="Stage Name 2" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
                                         Stage Name 3
@@ -356,13 +354,13 @@ export default function Register() {
                                 <Input placeholder="Stage Name 3" />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm">Twitter</span>}
                                 name="twitter"
                             >
                                 <Input placeholder="@" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">Instagram</span>
                                 }
@@ -370,14 +368,14 @@ export default function Register() {
                             >
                                 <Input placeholder="@" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label={<span className="text-sm">Tiktok</span>}
                                 name="tiktok"
                             >
                                 <Input placeholder="@" />
                             </Form.Item>
 
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label="Password"
                                 name="password"
                                 rules={[
@@ -389,13 +387,14 @@ export default function Register() {
                             >
                                 <Input.Password size="large" />
                             </Form.Item>
-                            <Form.Item<IAccountRegisterRequest>
+                            <Form.Item<IAuthRegisterRequest>
                                 label="Confirm Password"
-                                name="confirm_password"
+                                name="password_confirmation"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please input your confirm password!",
+                                        message:
+                                            "Please input your confirm password!",
                                     },
                                 ]}
                             >
@@ -405,7 +404,7 @@ export default function Register() {
                             <Form.Item className="text-center">
                                 <ButtonFill
                                     htmlType={"submit"}
-                                    loading={isLoading}
+                                    disabled={isLoading}
                                     className="bg-gradient-to-r from-primary from-30% to-secondary mt-2 !px-14 !py-3 !rounded-3xl "
                                     labelClassName="!text-xl"
                                     title="Create Account"

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import DateTimeUtils from "@/utils/DateTimeUtils";
 import { Button } from "antd";
 import Image from "next/image";
@@ -32,7 +32,6 @@ export default function Home() {
                             over 250 patner locations.
                         </div>
                         <ButtonFill
-                            onClick={() => signOut()}
                             title="ORDER KIT"
                             className="bg-red-300 mt-2"
                         />
@@ -55,6 +54,7 @@ export default function Home() {
                             Schedule your appointment today.
                         </div>
                         <ButtonFill
+                            href="/schedule-create"
                             title="BOOK AN APPOINTMENT"
                             className="bg-gradient-to-r from-[#374b73] from-30% to-[#1d92ff] mt-2"
                         />

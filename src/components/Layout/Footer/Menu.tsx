@@ -154,7 +154,7 @@ export default function Menu() {
     return (
         <footer className="flex flex-row justify-around py-2">
             {menus.map((menu) => (
-                <MenuItem item={menu} />
+                <MenuItem key={menu.title} item={menu} />
             ))}
         </footer>
     );

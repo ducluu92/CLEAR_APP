@@ -12,7 +12,7 @@ export default function MenuItem({ item }: Props) {
 
         return item.children.map((item, index) => ({
             key: index + "",
-            label: <MenuItem item={item} />,
+            label: <MenuItem key={item.title} item={item} />,
         }));
     }, [item?.children]);
     return (
@@ -21,7 +21,7 @@ export default function MenuItem({ item }: Props) {
                 <Dropdown
                     overlayClassName=""
                     menu={{ items }}
-                    placement="topCenter"
+                    placement="top"
                     trigger={["click"]}
                 >
                     <div className="flex flex-col items-center justify-center space-y-1 cursor-pointer">
