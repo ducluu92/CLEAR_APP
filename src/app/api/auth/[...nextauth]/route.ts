@@ -28,7 +28,7 @@ export const authConfig = {
                 }
                 try {
                     console.log({credentials})
-                    // const res = await AuthApi.login({email: credentials.email, password: credentials.password});
+                    const res = await AuthApi.login({email: credentials.email, password: credentials.password});
                     // if()
                     // console.log({res})
                     const user = {

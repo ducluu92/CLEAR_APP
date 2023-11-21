@@ -44,7 +44,7 @@ export default function ButtonFill({
         propComps.htmlType = htmlType;
     }
     if (loading) {
-        propComps.loading = loading;
+        propComps.disabled = loading;
     }
     if (disabled) {
         propComps.disabled = disabled;
@@ -53,8 +53,7 @@ export default function ButtonFill({
         // @ts-ignore
         <Comp
             className={
-                "!rounded-lg border-none !p-[5px] align-middle !h-auto shadow-md drop-shadow-lg shadow-slate-200 block " +
-                className
+                `!rounded-lg border-none !p-[5px] align-middle !h-auto shadow-md drop-shadow-lg shadow-slate-200 ${href && 'block'} ${className}` 
             }
             {...propComps}
             {...props}
@@ -70,7 +69,7 @@ export default function ButtonFill({
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-3 h-3 font-bold text-white"
+                        className="w-3 h-3 font-bold text-#151313"
                     >
                         <path
                             strokeLinecap="round"
