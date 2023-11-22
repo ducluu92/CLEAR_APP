@@ -23,6 +23,7 @@ export default function EditPhone() {
         console.log("Failed:", errorInfo);
     };
     const onFinished = async (params: any) => {
+        return message.error('Under construction')
         try {
             if (isLoading) return;
             setIsLoading(true);
@@ -62,7 +63,9 @@ export default function EditPhone() {
                 </Link>
 
                 <div className="flex flex-col space-y-4 ">
-                    <h2 className="text-primary text-2xl">Edit Profile</h2>
+                    <h2 className="text-primary text-2xl">
+                        Request phone # change
+                    </h2>
                     <div className="flex min-h-full flex-1 w-100 ">
                         <div className="w-full ">
                             <Form
@@ -78,43 +81,17 @@ export default function EditPhone() {
                                 layout={"vertical"}
                             >
                                 <Form.Item<IAccountEditPasswordRequest>
-                                    label="Current Password"
-                                    name="current_password"
+                                    label="Please enter your new phone #"
+                                    name="old_password"
                                     rules={[
                                         {
                                             required: true,
                                             message:
-                                                "Please input your current password!",
+                                                "Please enter your new phone #",
                                         },
                                     ]}
                                 >
-                                    <Input.Password size="large" />
-                                </Form.Item>
-                                <Form.Item<IAccountEditPasswordRequest>
-                                    label="Password"
-                                    name="password"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your password!",
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password size="large" />
-                                </Form.Item>
-                                <Form.Item<IAccountEditPasswordRequest>
-                                    label="Confirm Password"
-                                    name="password_confirmation"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                "Please input your confirm password!",
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password size="large" />
+                                    <Input size="large" />
                                 </Form.Item>
 
                                 <Form.Item className="text-center">
@@ -123,10 +100,9 @@ export default function EditPhone() {
                                         disabled={isLoading}
                                         className="bg-gradient-to-r from-primary from-30% to-secondary mt-2 !px-14 !py-3 !rounded-3xl "
                                         labelClassName="!text-xl"
-                                        title="Save"
+                                        title="Continue"
                                         showIcon={false}
                                     />
-                                   
                                 </Form.Item>
                             </Form>
                         </div>

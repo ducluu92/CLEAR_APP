@@ -54,15 +54,7 @@ const RootLayoutCli = ({
             <SessionProvider session={null}>
                 <StyledComponentsRegistry>
                     <ConfigProvider theme={themeConfig}>
-                        <Providers
-                            account={{
-                                profile: profile,
-                                accessToken: accessToken,
-                            }}
-                            nextAuthSession={null}
-                        >
-                            {children}
-                        </Providers>
+                        <Providers>{children}</Providers>
                     </ConfigProvider>
                 </StyledComponentsRegistry>
             </SessionProvider>
