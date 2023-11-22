@@ -1,5 +1,4 @@
 import React from "react";
-import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 
 import { AccountProvider } from "./AccountContext";
@@ -7,16 +6,10 @@ import { AccountProvider } from "./AccountContext";
 import { SWRConfig } from "swr";
 
 interface ProvidersProps {
-    account: {
-        profile: any | null;
-        accessToken: string | null;
-    };
     children: React.ReactNode;
-    nextAuthSession: Session|null;
 }
 
 function Providers(props: ProvidersProps) {
-    const { account } = props;
 
     return (
         <SWRConfig
@@ -31,11 +24,9 @@ function Providers(props: ProvidersProps) {
                 // provider: () => new Map()
             }}
         >
-            <SessionProvider session={props.nextAuthSession}>
-                <AccountProvider account={account}>
-                    {props.children}
-                </AccountProvider>
-            </SessionProvider>
+            <AccountProvider>
+                {props.children}
+            </AccountProvider>
         </SWRConfig>
     );
 }

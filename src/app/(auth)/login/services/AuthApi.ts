@@ -37,6 +37,20 @@ export default {
             method: "POST",
             data,
         })
+    },
+    forgotPassword(data: IAuthForgotPasswordRequest): Promise<IDataResponse<any>>{
+        return request({
+            url: `${PATH}/forgot`,
+            method: "POST",
+            data,
+        })
+    },
+    changePassword(data: IAuthChangePasswordRequest): Promise<IDataResponse<any>>{
+        return request({
+            url: `${PATH}/new-pass`,
+            method: "POST",
+            data,
+        })
     }
 
 };

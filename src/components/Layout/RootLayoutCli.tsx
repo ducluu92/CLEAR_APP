@@ -11,6 +11,7 @@ import StyledComponentsRegistry from "../../../lib/AntdRegistry";
 import BaseConstant from "@/constants/BaseConstant";
 import nProgress from "nprogress";
 import { usePathname, useSearchParams } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
 const RootLayoutCli = ({
@@ -22,6 +23,7 @@ const RootLayoutCli = ({
     nProgress.configure({ showSpinner: false });
     const pathname = usePathname();
     const searchParams = useSearchParams();
+
     useEffect(() => {
         if (typeof window !== "undefined") {
             const loader = document.getElementById("globalLoader");
@@ -49,19 +51,21 @@ const RootLayoutCli = ({
             <div id="globalLoader">
                 <img src="/image/spinner.gif" alt="" />
             </div>
-            <StyledComponentsRegistry>
-                <ConfigProvider theme={themeConfig}>
-                    <Providers
-                        account={{
-                            profile: profile,
-                            accessToken: accessToken,
-                        }}
-                        nextAuthSession={null}
-                    >
-                        {children}
-                    </Providers>
-                </ConfigProvider>
-            </StyledComponentsRegistry>
+            <SessionProvider session={null}>
+                <StyledComponentsRegistry>
+                    <ConfigProvider theme={themeConfig}>
+                        <Providers
+                            account={{
+                                profile: profile,
+                                accessToken: accessToken,
+                            }}
+                            nextAuthSession={null}
+                        >
+                            {children}
+                        </Providers>
+                    </ConfigProvider>
+                </StyledComponentsRegistry>
+            </SessionProvider>
         </div>
     );
 };

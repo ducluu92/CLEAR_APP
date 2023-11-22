@@ -34,3 +34,12 @@ interface IAuthVerifyRequest {
     email: string;
     code: string;
 }
+interface IAuthForgotPasswordRequest {
+    email: string;
+}
+interface IAuthChangePasswordRequest {
+    email: string;
+    code: string;
+    password: string;
+    password_confirmation: string;
+}

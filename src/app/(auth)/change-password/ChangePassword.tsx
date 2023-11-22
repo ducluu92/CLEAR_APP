@@ -5,39 +5,40 @@ import {} from "@ant-design/icons";
 import { Button, Form, Input, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import AuthApi from "../login/services/AuthApi";
-import { useRouter } from "next/navigation";
-type FieldType = {
-    email?: string;
-    password?: string;
-    // remember?: string;
-};
-export default function ForgotPassword() {
+import MessageUtils from "@/utils/MessageUtils";
+
+export default function ChangePassword() {
+    const searchParams = useSearchParams();
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const onFinishFailed = (errorInfo: any) => {
         console.log("Failed:", errorInfo);
     };
-    const onFinished = async (params: any) => {
-        try {
-            setIsLoading(true);
-            const loginRes = await AuthApi.forgotPassword({ ...params });
-            console.log({ loginRes });
-            if (loginRes && loginRes.success) {
-                message.success(
-                    "Please check your email to receive a link to change your password!"
-                );
-                router.push("/change-password");
-            } else {
-                message.error("Your email is invalid or does not exist");
-            }
-        } catch (err: any) {
-            message.error("Your email is invalid or does not exist");
-        } finally {
-            setIsLoading(false);
-        }
+    const onFinished = (params: any) => {
+        setIsLoading(true);
+        const data: IAuthChangePasswordRequest = {
+            ...params,
+            code: searchParams.get("code") || "",
+            email: searchParams.get("email") || "",
+        };
+        AuthApi.changePassword(data)
+            .then((res) => {
+                console.log(res);
+                message.success("Change password success");
+                router.push("/login");
+            })
+            .catch((err) => {
+                console.log(err);
+                // message.error(err?.message || 'Error');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
+
     return (
         <div className="flex flex-col space-y-12 pb-6">
             <div className="flex flex-row justify-between items-center mt-24">
@@ -60,7 +61,9 @@ export default function ForgotPassword() {
             </div>
 
             <div className="flex flex-col space-y-4 items-center">
-                <h2 className="text-primary text-2xl">Reset Password</h2>
+                <h2 className="text-primary text-2xl">
+                    Enter you new password
+                </h2>
                 <div className="flex min-h-full flex-1 flex-col justify-center ">
                     <div className="w-full ">
                         <Form
@@ -75,18 +78,27 @@ export default function ForgotPassword() {
                             autoComplete="off"
                             layout={"vertical"}
                         >
-                            <Form.Item<FieldType>
-                                label="Email or Phone #"
+                            <Form.Item<IAuthChangePasswordRequest>
+                                label="New Password"
                                 name="email"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please input your email!",
-                                    },
-                                    {
-                                        type: "email",
                                         message:
-                                            "The input is not valid E-mail!",
+                                            "Please input your new password!",
+                                    },
+                                ]}
+                            >
+                                <Input size="large" />
+                            </Form.Item>
+                            <Form.Item<IAuthChangePasswordRequest>
+                                label="Confirm New Password"
+                                name="email"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message:
+                                            "Please input your confirm new password!",
                                     },
                                 ]}
                             >
@@ -99,7 +111,7 @@ export default function ForgotPassword() {
                                     loading={isLoading}
                                     className="bg-gradient-to-r from-primary from-30% to-secondary mt-2 !px-14 !py-3 !rounded-3xl "
                                     labelClassName="!text-xl"
-                                    title="Send Verification Code"
+                                    title="Update Password"
                                     showIcon={false}
                                 />
                                 {/* <Button

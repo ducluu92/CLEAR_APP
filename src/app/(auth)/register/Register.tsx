@@ -12,6 +12,7 @@ import AuthApi from "../login/services/AuthApi";
 import { useRouter } from "next/navigation";
 import MessageUtils from "@/utils/MessageUtils";
 import { DATE_SERVER_FORMAT } from "@/utils/DateTimeUtils";
+import nProgress from "nprogress";
 
 export default function Register() {
     const router = useRouter();
@@ -29,7 +30,11 @@ export default function Register() {
         try {
             if (isLoading) return;
             setIsLoading(true);
-            const data = {...params, dob: params.dob.format(DATE_SERVER_FORMAT)}
+            nProgress.start();
+            const data = {
+                ...params,
+                dob: params.dob.format(DATE_SERVER_FORMAT),
+            };
             const loginRes = await AuthApi.register(data);
             console.log({ loginRes });
             if (loginRes && loginRes.success) {
@@ -38,11 +43,12 @@ export default function Register() {
                 );
                 router.push("/");
             } else {
-                MessageUtils.showResponseError(loginRes?.errors)
+                MessageUtils.showResponseError(loginRes?.errors);
             }
         } catch (err: any) {
-            MessageUtils.showResponseError(err)
+            MessageUtils.showResponseError(err);
         } finally {
+            nProgress.done();
             setIsLoading(false);
         }
     };
@@ -83,7 +89,11 @@ export default function Register() {
                             layout={"vertical"}
                         >
                             <Form.Item<IAuthRegisterRequest>
-                                label="First Name"
+                                label={
+                                    <span className="text-sm text-primary">
+                                        First Name
+                                    </span>
+                                }
                                 name="first_name"
                                 rules={[
                                     {
@@ -93,9 +103,9 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                <Input size="large" />
+                                <Input placeholder="First name" />
                             </Form.Item>
-                            
+
                             <Form.Item<IAuthRegisterRequest>
                                 label={
                                     <span className="text-sm">
@@ -118,7 +128,7 @@ export default function Register() {
                                     },
                                 ]}
                             >
-                                <Input placeholder="last name" />
+                                <Input placeholder="Last name" />
                             </Form.Item>
 
                             <Form.Item<IAuthRegisterRequest>
@@ -299,6 +309,11 @@ export default function Register() {
                                         required: true,
                                         message: "Please input email!",
                                     },
+                                    {
+                                        type: "email",
+                                        message:
+                                            "The input is not valid E-mail!",
+                                    },
                                 ]}
                             >
                                 <Input placeholder="Please input email" />
@@ -394,9 +409,26 @@ export default function Register() {
                                     {
                                         required: true,
                                         message:
-                                            "Please input your confirm password!",
+                                            "Please confirm your password!",
                                     },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (
+                                                !value ||
+                                                getFieldValue("password") ===
+                                                    value
+                                            ) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(
+                                                new Error(
+                                                    "The new password that you entered do not match!"
+                                                )
+                                            );
+                                        },
+                                    }),
                                 ]}
+                                dependencies={["password"]}
                             >
                                 <Input.Password size="large" />
                             </Form.Item>

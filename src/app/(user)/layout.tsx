@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const UserLayout = async ({ children }: { children: React.ReactNode }) => {
-    const session = await getServerSession(authConfig);
+    const session: any = await getServerSession(authConfig);
     // const headersList = headers();
     // const cookies = decodeURIComponent(headersList.get("cookie") || "");
     // const reqUrl = CookieUtils.getCookieParams(cookies, "next-auth.callback-url") || "";

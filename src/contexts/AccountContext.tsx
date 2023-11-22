@@ -1,51 +1,69 @@
-'use client'
-import React, { createContext, useContext, useState } from 'react';
-import Cookies from 'js-cookie';
+"use client";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 // import { FullProfileResource } from '../data/auth/models/types';
-import _ from 'lodash';
-import BaseConstant from '@/constants/BaseConstant';
+import _ from "lodash";
+import BaseConstant from "@/constants/BaseConstant";
+import AccountApi from "@/app/(user)/menu/account/services/AccountApi";
+import { useSession } from "next-auth/react";
+import CookieUtils from "@/utils/CookieUtils";
+import { message } from "antd";
 
 interface AccountContext {
-    accessToken: string | null,
-    setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
-    auth: any | null,
-    isLoggedIn: boolean,
+    profile: any;
+    setProfile: React.Dispatch<React.SetStateAction<string | null>>;
+    isLoggedIn: boolean;
 }
 
 interface AccountProviderProps {
-    account: {
-        profile: any | null;
-        accessToken: string | null;
-    };
     children?: React.ReactNode;
 }
 
 const AccountContext = createContext<AccountContext | null>(null);
 
 export const AccountProvider = (props: AccountProviderProps) => {
+    const [profile, setProfile] = useState<any>();
 
-    const { account } = props;
-    const [accessToken, setAccessToken] = useState<string | null>(Cookies.get(BaseConstant.TOKEN_KEY) || null);
+    const session: any = useSession();
+
+    const getProfile = async () => {
+        try {
+            const profile = await AccountApi.getProfile();
+            console.log({ profile });
+            if (profile?.success) {
+                setProfile(profile?.data?.user);
+            } else {
+                message.error("Error when get usr profile");
+            }
+        } catch (err) {}
+    };
+    useEffect(() => {
+        if (session?.data?.jwt) {
+            console.log("has token");
+            CookieUtils.setToken(session?.data?.jwt);
+            getProfile();
+        }
+    }, [session]);
 
     return (
         <AccountContext.Provider
             value={{
-                accessToken: accessToken,
-                setAccessToken: setAccessToken,
-                auth: account.profile,
-                isLoggedIn: !_.isNull(account.profile),
+                profile,
+                setProfile,
+                isLoggedIn: !_.isNull(profile),
             }}
         >
             {props.children}
         </AccountContext.Provider>
     );
-
 };
-
 
 export const useAccountContext = () => {
     const context = useContext(AccountContext);
-    if (context === null) throw new Error('useAccountContext must be used within a AccountProvider');
+    if (context === null)
+        throw new Error(
+            "useAccountContext must be used within a AccountProvider"
+        );
 
     return context;
 };

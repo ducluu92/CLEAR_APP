@@ -12,9 +12,11 @@ import {
     MessageOutlined,
 } from "@ant-design/icons";
 import ButtonFill from "@/components/Button/ButtonFill";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Home() {
+    const session = useSession()
+    console.log({session})
     return (
         <>
             <span className="text-sm  text-primary">

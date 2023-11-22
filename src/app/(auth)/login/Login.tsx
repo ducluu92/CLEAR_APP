@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import nProgress from "nprogress";
 import { useState } from "react";
 type FieldType = {
     email?: string;
@@ -22,6 +23,7 @@ export default function Login() {
     const onFinished = async (params: any) => {
         try {
             setIsLoading(true);
+            nProgress.start();
             // const loginRes = await AuthApi.login({ ...params });
             // console.log({loginRes})
             // if (loginRes && loginRes.success) {
@@ -41,6 +43,7 @@ export default function Login() {
         } catch (err: any) {
             message.error("User credentials are not valid");
         } finally {
+            nProgress.done();
             setIsLoading(false);
         }
     };

@@ -10,6 +10,8 @@ export default {
                 const mess = _.get(errors.message, keys[0])[0] || 'Error'
                 message.error(mess)
             }
+        } else {
+            message.error(errors?.message)
         }
     },
 };

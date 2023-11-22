@@ -69,7 +69,7 @@ export default function ButtonFill({
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-3 h-3 font-bold text-#151313"
+                        className="w-3 h-3 font-bold text-white"
                     >
                         <path
                             strokeLinecap="round"
