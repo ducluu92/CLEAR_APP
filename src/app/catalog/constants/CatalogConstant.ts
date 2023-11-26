@@ -4,6 +4,8 @@ export default {
     TYPE_STATES: "states",
     TYPE_COUNTRIES: "countries",
     TYPE_ORGANIZATION_TYPES: "organization_types",
+    TYPE_ORGANIZATION_ROLES: "organization_roles",
+    TYPE_LOCATIONS: "locations",
 
     getTypeList() {
         return [

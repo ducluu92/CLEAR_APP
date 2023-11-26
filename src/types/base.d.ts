@@ -19,7 +19,5 @@ interface ModalRefProp {
 }
 
 interface IBaseQueryParams {
-    page?: number;
-    page_size?: number;
-    search_query?: string;
+    keyword?: string;
 }

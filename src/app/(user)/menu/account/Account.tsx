@@ -47,10 +47,13 @@ export default function MyAccount() {
                             Address: {profile?.address_line_1}
                         </div>
                         <div className="text-xs text-[#72809c]">
-                            Sex: {profile?.sex_id}
+                            Country: {profile?.country?.name}
                         </div>
                         <div className="text-xs text-[#72809c]">
-                            Gender Identity: {profile?.gender_identity_id}
+                            Sex: {profile?.sex?.name}
+                        </div>
+                        <div className="text-xs text-[#72809c]">
+                            Gender Identity: {profile?.gender_identity?.name}
                         </div>
                         <div className="text-xs text-[#72809c]">
                             Pronouns: {profile?.pronouns}

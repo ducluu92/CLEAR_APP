@@ -67,9 +67,9 @@ export default function ButtonFill({
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        strokeWidth={1.5}
+                        strokeWidth={4}
                         stroke="currentColor"
-                        className="w-3 h-3 font-bold text-white"
+                        className="w-3 h-3 font-bold text-white ml-1"
                     >
                         <path
                             strokeLinecap="round"

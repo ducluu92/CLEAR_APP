@@ -28,7 +28,7 @@ export default function ForgotPassword() {
                 message.success(
                     "Please check your email to receive a link to change your password!"
                 );
-                router.push("/change-password");
+                router.push("/");
             } else {
                 message.error("Your email is invalid or does not exist");
             }

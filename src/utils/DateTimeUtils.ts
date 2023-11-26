@@ -2,6 +2,7 @@ import _ from "lodash";
 import moment, { Moment, isMoment } from "moment";
 
 export const DATE_SERVER_FORMAT = "YYYY-MM-DD";
+export const DATE_CLIENT_FORMAT = "MM/DD/YYYY";
 export const TIME_SERVER_RESPONSE = "hh:mm A";
 export const TIME_SERVER_REQUEST = "HH:mm";
 
@@ -63,6 +64,14 @@ export default {
             return day;
         }
     },
+    getTime(time: any): string {
+        try {
+            const parseTime = isMoment(time) ? time : moment(time);
+            return parseTime.format(TIME_SERVER_RESPONSE);
+        } catch {
+            return "-";
+        }
+    },
     from12To24(time: string): string {
         try {
             const date = moment(time, TIME_SERVER_RESPONSE);
@@ -79,21 +88,27 @@ export default {
             return time;
         }
     },
+    getClientFormat(dateTime: any,){
+        try {
+            const date = isMoment(dateTime) ? dateTime : moment(dateTime);
+            return date.format(DATE_CLIENT_FORMAT)
+        } catch {
+            return dateTime;
+        }
+    },
     getDateTimeFull(
-        dateTime: string | number,
-        isShowTIme: boolean = true,
+        dateTime: any,
+        isShowTIme: boolean = true
     ): string | number {
         try {
-            const date = _.isString(dateTime)
-                ? moment(dateTime)
-                : moment(dateTime);
+            const date = isMoment(dateTime) ? dateTime : moment(dateTime);
             const day = date.date();
             const month = date.month();
             const year = date.year();
             const monthNum = MONTHS[month];
             const dayOfWeek = date.day();
             return `${DAYS[dayOfWeek]}, ${monthNum} ${date.date()}, ${year} ${
-                isShowTIme ? date.format(TIME_SERVER_RESPONSE) : ''
+                isShowTIme ? date.format(TIME_SERVER_RESPONSE) : ""
             }`;
         } catch {
             return dateTime;

@@ -38,7 +38,7 @@ export default function EditEmail() {
             if (apiRes && apiRes.success) {
                 // message.success("Update profile success!");
                 // router.back();
-                // setIsConfirm(true);
+                setIsConfirm(true);
             } else {
                 MessageUtils.showResponseError(apiRes?.errors);
             }
@@ -47,6 +47,33 @@ export default function EditEmail() {
         } finally {
             nProgress.done();
             setIsLoading(false);
+        }
+    };
+
+    const handleVerifyEditEMail = async () => {
+        try {
+            const data: IAccountEditEmailVerifyRequest = {
+                code: otp,
+                email: form.getFieldValue("email"),
+            };
+            if (isLoading) return;
+            setIsLoading(true);
+            nProgress.start();
+
+            const apiRes = await AccountApi.verifyEditEmail(data);
+            console.log({ apiRes });
+            if (apiRes && apiRes.success) {
+                // message.success("Update profile success!");
+                router.back();
+                // setIsConfirm(true);
+            } else {
+                MessageUtils.showResponseError(apiRes?.errors);
+            }
+        } catch (err) {
+            MessageUtils.showResponseError(err);
+        } finally {
+            nProgress.done();
+            setIsLoading(true);
         }
     };
 
@@ -92,11 +119,14 @@ export default function EditEmail() {
                                 onChange={setOtp}
                                 numInputs={5}
                                 renderSeparator={<span> </span>}
-                                inputStyle={'rounded-sm border-gray-300 border-2 !w-12 !h-12 text-lg'}
+                                inputStyle={
+                                    "rounded-sm border-gray-300 border-2 !w-12 !h-12 text-lg"
+                                }
                                 containerStyle={"space-x-2"}
-                                renderInput={(props) => <input  {...props} />}
+                                renderInput={(props) => <input {...props} />}
                             />
                             <ButtonFill
+                                onClick={handleVerifyEditEMail}
                                 disabled={isLoading}
                                 className="bg-gradient-to-r from-primary from-30% to-secondary !mt-10 !px-14 !py-3 !rounded-3xl "
                                 labelClassName="!text-xl"

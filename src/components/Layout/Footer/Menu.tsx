@@ -16,7 +16,9 @@ export default function Menu() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         className={`w-6 h-6 ${
-                            pathname === "/home" && "stroke-red-500"
+                            pathname === "/home"
+                                ? "stroke-red-500"
+                                : "stroke-gray-text"
                         }`}
                     >
                         <path
@@ -39,7 +41,9 @@ export default function Menu() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         className={`w-6 h-6 ${
-                            pathname === "/schedule" && "stroke-red-500"
+                            pathname === "/schedule"
+                                ? "stroke-red-500"
+                                : "stroke-gray-text"
                         }`}
                     >
                         <path
@@ -62,7 +66,9 @@ export default function Menu() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         className={`w-6 h-6 ${
-                            pathname === "/result" && "stroke-red-500"
+                            pathname === "/result"
+                                ? "stroke-red-500"
+                                : "stroke-gray-text"
                         }`}
                     >
                         <path
@@ -85,7 +91,9 @@ export default function Menu() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         className={`w-6 h-6 ${
-                            pathname.includes("menu") && "stroke-red-500"
+                            pathname.includes("menu")
+                                ? "stroke-red-500"
+                                : "stroke-gray-text"
                         }`}
                     >
                         <path

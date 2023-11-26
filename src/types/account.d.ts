@@ -11,9 +11,12 @@ interface IAccountProfile {
     address_line_1: string;
     address_line_2: string;
     sex_id: number;
+    sex: ICatalog;
     gender_identity_id: number;
+    gender_identity: ICatalog;
     city: string;
     country_id: number;
+    country: ICatalog;
     state: string;
     instagram: string;
     tiktok: string;
@@ -33,6 +36,8 @@ interface IAccountProfile {
     created_at: string;
     updated_at: string;
     barcode: string;
+    result_latest: IResult;
+    appointment_latest: IAppointment;
 }
 
 interface IAccountProfileResponse {

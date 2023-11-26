@@ -28,7 +28,9 @@ export default function MenuItem({ item }: Props) {
                         <span className="fill-red-500">{item.icon}</span>
                         <h4
                             className={`text-xs ${
-                                item.isActive && "text-red-500"
+                                item.isActive
+                                    ? "text-red-500"
+                                    : "text-gray-text"
                             }`}
                         >
                             {item.title}
@@ -42,7 +44,9 @@ export default function MenuItem({ item }: Props) {
                 >
                     <span className="fill-red-500">{item.icon}</span>
                     <h4
-                        className={`text-xs ${item.isActive && "text-red-500"}`}
+                        className={`text-xs ${
+                            item.isActive ? "text-red-500" : "text-gray-text"
+                        }`}
                     >
                         {item.title}
                     </h4>

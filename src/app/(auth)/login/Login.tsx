@@ -88,6 +88,11 @@ export default function Login() {
                                         required: true,
                                         message: "Please input your email!",
                                     },
+                                    {
+                                        type: "email",
+                                        message:
+                                            "The input is not valid E-mail!",
+                                    },
                                 ]}
                             >
                                 <Input size="large" />

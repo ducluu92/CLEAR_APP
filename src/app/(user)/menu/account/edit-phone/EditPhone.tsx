@@ -18,12 +18,11 @@ export default function EditPhone() {
     const [form] = Form.useForm();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { data: sexes } = useCatalogSWR(CatalogConstant.TYPE_SEXES);
     const onFinishFailed = (errorInfo: any) => {
         console.log("Failed:", errorInfo);
     };
     const onFinished = async (params: any) => {
-        return message.error('Under construction')
+        return message.error("Under construction");
         try {
             if (isLoading) return;
             setIsLoading(true);
@@ -81,7 +80,11 @@ export default function EditPhone() {
                                 layout={"vertical"}
                             >
                                 <Form.Item<IAccountEditPasswordRequest>
-                                    label="Please enter your new phone #"
+                                    label={
+                                        <span className="text-sm text-primary">
+                                            Please enter your new phone #
+                                        </span>
+                                    }
                                     name="old_password"
                                     rules={[
                                         {

@@ -1,16 +1,26 @@
-import React from "react";
+import DateTimeUtils from "@/utils/DateTimeUtils";
+import { useRouter } from "next/navigation";
+import React, { useCallback } from "react";
+import { PATH_SCHEDULE } from "../Schedule";
 
 type Props = {
     item: IAppointment;
 };
 export default function ScheduleItem(props: Props) {
     const { item } = props;
+    const router = useRouter()
     return (
-        <div className="bg-white rounded-xl shadow-lg py-3 relative overflow-hidden pr-2">
+        <div
+            onClick={() => {
+                console.log(item)
+                router.push(`${PATH_SCHEDULE}/${item.id}`)
+            }}
+            className="bg-white rounded-xl shadow-lg py-3 relative overflow-hidden pr-2 cursor-pointer"
+        >
             <div className="absolute top-3 bottom-3 w-[5px] bg-primary rounded-r-xl" />
             <div className="pl-4">
                 <div className="text-primary text-[16px]">
-                    {item?.test_panel}
+                    {item?.test_panel?.name}
                 </div>
 
                 <div className="card-info-body space-y-1">
@@ -21,7 +31,7 @@ export default function ScheduleItem(props: Props) {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-4 h-4 text-black-text"
+                            className="w-4 h-4 text-primary"
                         >
                             <path
                                 strokeLinecap="round"
@@ -30,7 +40,9 @@ export default function ScheduleItem(props: Props) {
                             />
                         </svg>
 
-                        <div className="text-[13px] text-black-text"> November 21, 2023 </div>
+                        <div className="text-[13px] text-black-text">
+                            {DateTimeUtils.getDateTimeFull(item?.start_date_time)}
+                        </div>
                     </div>
                     <div className="flex flex-row items-center text-sm space-x-1">
                         <svg
@@ -39,7 +51,7 @@ export default function ScheduleItem(props: Props) {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-4 h-4 text-black-text"
+                            className="w-4 h-4 text-primary"
                         >
                             <path
                                 strokeLinecap="round"
@@ -48,7 +60,9 @@ export default function ScheduleItem(props: Props) {
                             />
                         </svg>
 
-                        <div className="text-[13px] text-black-text"> 08:15 AM </div>
+                        <div className="text-[13px] text-black-text">
+                            {DateTimeUtils.getTime(item?.start_date_time)}
+                        </div>
                     </div>
                     <div className="flex flex-row items-center text-sm space-x-1">
                         <svg
@@ -57,7 +71,7 @@ export default function ScheduleItem(props: Props) {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-4 h-4 text-black-text"
+                            className="w-4 h-4 text-primary"
                         >
                             <path
                                 strokeLinecap="round"
@@ -71,7 +85,9 @@ export default function ScheduleItem(props: Props) {
                             />
                         </svg>
 
-                        <div className="text-[13px] text-black-text">Las Vegas</div>
+                        <div className="text-[13px] text-black-text">
+                            {item.location.name}
+                        </div>
                     </div>
                 </div>
             </div>

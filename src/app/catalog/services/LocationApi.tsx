@@ -1,5 +1,6 @@
 import BaseConstant from "@/constants/BaseConstant";
 import request from "@/utils/RequestUtils";
+import CatalogConstant from "../constants/CatalogConstant";
 const PATH = "catalog";
 // GET /api/catalog/list/{type}
 // gender_identities
@@ -7,11 +8,9 @@ const PATH = "catalog";
 // states
 // countries
 export default {
-    getList(
-        type: string = BaseConstant.TYPE_ALL,
-    ): Promise<IDataResponse<ICatalog[]>> {
+    getList(): Promise<IDataResponse<ILocation[]>> {
         return request({
-            url: `${PATH}/list/${type}`,
+            url: `${PATH}/list/${CatalogConstant.TYPE_LOCATIONS}`,
             method: "GET",
         });
     },

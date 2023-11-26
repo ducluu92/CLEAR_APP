@@ -29,7 +29,7 @@ const UserLayout = async ({ children }: { children: React.ReactNode }) => {
         <main className="flex h-screen flex-col justify-between ">
             <ActionButtons/>
 
-            <div className="flex-1 bg-[#f5faff] p-3 overflow-y-scroll">
+            <div className="flex-1 bg-[#f5faff] p-3 overflow-auto">
                 {children}
             </div>
             <Menu />
