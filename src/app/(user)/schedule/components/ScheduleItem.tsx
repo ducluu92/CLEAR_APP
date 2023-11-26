@@ -41,7 +41,7 @@ export default function ScheduleItem(props: Props) {
                         </svg>
 
                         <div className="text-[13px] text-black-text">
-                            {DateTimeUtils.getDateTimeFull(item?.start_date_time)}
+                            {DateTimeUtils.getClientFormat(item?.start_date_time)}
                         </div>
                     </div>
                     <div className="flex flex-row items-center text-sm space-x-1">

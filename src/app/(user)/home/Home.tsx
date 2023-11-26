@@ -21,9 +21,12 @@ import ShareResultPopup from "../result/components/ShareResultPopup";
 import Link from "next/link";
 import { PATH_RESULT } from "../result/Result";
 import useResultShareUserListSRW from "../result/hooks/useResultShareUserListSRW";
+import { useRouter } from "next/navigation";
+import { PATH_SCHEDULE } from "../schedule/Schedule";
 export const PATH_HOME = "/home";
 export default function Home() {
     const session = useSession();
+    const router = useRouter()
     const { profile }: { profile: IAccountProfile } = useAccountContext();
     const { data, isLoading, isValidating, mutate } =
         useResultShareUserListSRW();
@@ -220,7 +223,7 @@ export default function Home() {
                         {!!profile?.appointment_latest && (
                             <div
                                 onClick={() => {
-                                    window.open("https://www.getclrd.com/faq");
+                                    router.push(`${PATH_SCHEDULE}/${profile?.appointment_latest.id}`)
                                 }}
                                 className="flex cursor-pointer flex-row justify-between items-center shadow-md border-black-100 border-[1px] shadow-black-100 rounded-2xl p-4 bg-white"
                             >
@@ -246,7 +249,7 @@ export default function Home() {
                                             </svg>
 
                                             <div className="text-[13px] text-gray-text">
-                                                {DateTimeUtils.getDateTimeFull(
+                                                {DateTimeUtils.getClientFormat(
                                                     profile?.appointment_latest
                                                         ?.start_date_time
                                                 )}
