@@ -91,7 +91,7 @@ export default function OrganizationDetail() {
                                 type="link"
                                 icon={<EditOutlined />}
                             >
-                                Edit account information
+                                Edit organization
                             </Button>
                         </Link>
                     </div>

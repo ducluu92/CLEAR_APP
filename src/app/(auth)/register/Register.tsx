@@ -73,7 +73,7 @@ export default function Register() {
                 <div className="w-10" />
             </div>
 
-            <div className="flex flex-col space-y-4 items-center">
+            <div className="flex flex-col space-y-4 ">
                 <h2 className="text-primary text-2xl">Create Your Account</h2>
                 <div className="flex min-h-full flex-1 flex-col justify-center ">
                     <div className="w-full ">

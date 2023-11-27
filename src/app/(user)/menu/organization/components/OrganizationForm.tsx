@@ -103,7 +103,7 @@ export default function OrganizationForm() {
                     layout="vertical"
                     form={form}
                 >
-                    <div className="grid grid-cols-1 gap-x-1 md:grid-cols-2 md:gap-x-3">
+                    <div className="grid grid-cols-1 gap-x-1 ">
                         <Form.Item<IOrganization>
                             label={<span className="text-sm">Agency Name</span>}
                             name="name"

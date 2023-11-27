@@ -20,7 +20,7 @@ export default function OrganizationCreate() {
                 </Button>
             </Link>
             <div className="flex flex-col space-y-4 ">
-                <h2 className="text-primary text-2xl">Create Your Account</h2>
+                <h2 className="text-primary text-2xl">Create Your Organization</h2>
                 <div className="flex min-h-full flex-1 flex-col justify-center ">
                     <div className="w-full ">
                         <OrganizationForm />

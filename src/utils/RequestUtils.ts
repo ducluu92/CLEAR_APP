@@ -92,7 +92,7 @@ service.interceptors.response.use(
             if (error.response.status === 401) {
                 signOut()
                     .then((res: any) => {
-                        window?.location?.reload();
+                        // window?.location?.reload();
                         console.log("signOut", res);
                     })
                     .catch((err: any) => {

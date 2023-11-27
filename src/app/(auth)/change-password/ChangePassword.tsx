@@ -44,7 +44,7 @@ export default function ChangePassword() {
     
     useEffect(() => {
 
-    })
+    },[])
     return (
         <>
             {canView ? (

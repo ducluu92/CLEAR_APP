@@ -24,7 +24,7 @@ const AccountContext = createContext<AccountContext | null>(null);
 
 export const AccountProvider = (props: AccountProviderProps) => {
     const session: any = useSession();
-    const {data, isLoading} = useAccountProfileSRW()
+    // const {data, isLoading, error} = useAccountProfileSRW()
     const [profile, setProfile] = useState<any>();
 
 
@@ -46,11 +46,12 @@ export const AccountProvider = (props: AccountProviderProps) => {
             getProfile();
         }
     }, [session]);
-    useEffect(() => {
-        if (data) {
-            setProfile(data?.data?.user)
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     console.log(data, error)
+    //     // if (data) {
+    //     //     setProfile(data?.data?.user)
+    //     // }
+    // }, [data, error]);
 
     return (
         <AccountContext.Provider
