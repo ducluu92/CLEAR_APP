@@ -27,10 +27,10 @@ export default function VerifyJoinOrganization() {
         const data: IOrganizationUserResponseInvitationRequest = {
             code: searchParams.get("code") || "",
             invitation_accepted: +(
-                searchParams.get("invitation_accepted") || "0"
+                searchParams.get("invitation_accepted") || "2"
             ),
         };
-        const orgId = +(searchParams.get("organization_id") || "0");
+        const orgId = +(searchParams.get("organization_id") || "2");
         OrganizationApi.responseInvitation(orgId, data)
             .then((res) => {
                 console.log(res);

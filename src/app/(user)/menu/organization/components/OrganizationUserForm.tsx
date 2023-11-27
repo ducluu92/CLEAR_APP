@@ -242,7 +242,7 @@ export default function OrganizationUserForm() {
                                 disabled={isLoading}
                                 className="bg-gradient-to-r from-primary from-30% to-secondary mt-2 !px-7 !py-2 !rounded-3xl "
                                 labelClassName="!text-sm"
-                                title={editId ? "Save" : "Create Organization"}
+                                title={editId ? "Save" : "Create"}
                                 showIcon={false}
                             />
                         </Form.Item>

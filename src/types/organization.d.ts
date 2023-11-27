@@ -73,7 +73,7 @@ interface IOrganizationUserRole {
 }
 interface IOrganizationUserResponseInvitationRequest {
     invitation_accepted: number;
-    code: string;
+    code?: string;
 }
 
 interface IOrganizationUser {

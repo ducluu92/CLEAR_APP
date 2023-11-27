@@ -29,6 +29,20 @@ export default {
             data
         });
     },
+    requestEditPhone(data: IAccountEditPhoneRequest): Promise<IDataResponse<any>> {
+        return request({
+            url: `${PATH}/phone-code`,
+            method: "POST",
+            data
+        });
+    },
+    verifyEditPhone(data: IAccountEditPhoneVerifyRequest): Promise<IDataResponse<any>> {
+        return request({
+            url: `${PATH}/phone`,
+            method: "PUT",
+            data
+        });
+    },
     editPassword(data: IAccountEditPasswordRequest): Promise<IDataResponse<any>> {
         return request({
             url: `${PATH}/change-pass`,

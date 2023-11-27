@@ -80,3 +80,10 @@ interface IAccountEditEmailVerifyRequest {
     email: string;
     code: string;
 }
+interface IAccountEditPhoneRequest {
+    new_phone: string;
+}
+interface IAccountEditPhoneVerifyRequest {
+    new_phone: string;
+    code: string;
+}

@@ -39,13 +39,16 @@ export const authConfig: AuthOptions = {
                         email: credentials.email,
                         password: credentials.password,
                     });
-                    // if()
-                    console.log(res?.data?.access_token);
-                    const user = {
-                        id: res?.data?.access_token,
-                        email: credentials.email,
-                    };
-                    return user;
+                    if (res.success) {
+                        console.log(res?.data?.access_token);
+                        const user = {
+                            id: res?.data?.access_token,
+                            email: credentials.email,
+                        };
+                        return user;
+                    } else {
+                        throw new Error(res?.errors?.message || "Error");
+                    }
                 } catch (error) {
                     const err = error as AxiosError<any>;
                     console.log("error", JSON.stringify(error));
