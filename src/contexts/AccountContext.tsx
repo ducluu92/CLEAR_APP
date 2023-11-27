@@ -8,6 +8,7 @@ import AccountApi from "@/app/(user)/menu/account/services/AccountApi";
 import { useSession } from "next-auth/react";
 import CookieUtils from "@/utils/CookieUtils";
 import { message } from "antd";
+import useAccountProfileSRW from "@/app/(user)/menu/account/hooks/useAccountProfileSRW";
 
 interface AccountContext {
     profile: any;
@@ -22,9 +23,10 @@ interface AccountProviderProps {
 const AccountContext = createContext<AccountContext | null>(null);
 
 export const AccountProvider = (props: AccountProviderProps) => {
+    const session: any = useSession();
+    const {data, isLoading} = useAccountProfileSRW()
     const [profile, setProfile] = useState<any>();
 
-    const session: any = useSession();
 
     const getProfile = async () => {
         try {
@@ -44,6 +46,11 @@ export const AccountProvider = (props: AccountProviderProps) => {
             getProfile();
         }
     }, [session]);
+    useEffect(() => {
+        if (data) {
+            setProfile(data?.data?.user)
+        }
+    }, [data]);
 
     return (
         <AccountContext.Provider
