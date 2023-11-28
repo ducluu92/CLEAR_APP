@@ -40,7 +40,7 @@ export default function MyAccount() {
                             {profile?.first_name} {profile?.last_name}
                         </div>
                         <div className="text-xs text-[#72809c]">
-                            Dob:{" "}
+                            DOB:{" "}
                             {DateTimeUtils.getDateTimeFull(profile?.dob, false)}
                         </div>
                         <div className="text-xs text-[#72809c]">

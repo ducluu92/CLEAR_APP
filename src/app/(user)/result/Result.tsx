@@ -55,7 +55,7 @@ export default function Result() {
                         tabIndex !== 1 && "opacity-70"
                     }`}
                 >
-                    Share with me
+                    Shared with me
                 </Button>
                 <Button
                     onClick={() => {

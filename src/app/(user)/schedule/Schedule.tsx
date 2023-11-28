@@ -38,7 +38,7 @@ export default function Schedule() {
                             tabIndex !== 1 && "opacity-70"
                         }`}
                     >
-                        Book Appointment
+                        Upcoming
                     </Button>
                     <Button
                         onClick={() => {

@@ -11,8 +11,8 @@ export default class CookieUtils {
         return !_.isEmpty(accessToken);
     }
 
-    static getAccessTokenFromServer(context: GetServerSidePropsContext): string | null {
-        return _.get(context, `req.cookies.${BaseConstant.TOKEN_KEY}`, null);
+    static getAccessTokenFromServer(sessionServer: GetServerSidePropsContext): string | null {
+        return _.get(sessionServer, `jwt`, null);
     }
 
     static getCallbackUrlFromServer(context: GetServerSidePropsContext): string | null {

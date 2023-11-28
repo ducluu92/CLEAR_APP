@@ -7,7 +7,7 @@ import {} from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AuthApi from "../login/services/AuthApi";
 import { useRouter } from "next/navigation";
 import MessageUtils from "@/utils/MessageUtils";
@@ -26,6 +26,14 @@ export default function Register() {
     const onFinishFailed = (errorInfo: any) => {
         console.log("Failed:", errorInfo);
     };
+    const countriesSort: ICatalog[] = useMemo(() => {
+        if (countries) {
+            return countries.data.sort(function (x, y) {
+                return x.id === 232 ? -1 : y.id == 232 ? 1 : 0;
+            });
+        }
+        return [];
+    }, [countries]);
     const onFinished = async (params: any) => {
         try {
             if (isLoading) return;
@@ -221,7 +229,7 @@ export default function Register() {
                                 ]}
                             >
                                 <Select
-                                    options={countries?.data?.map((it) => ({
+                                    options={countriesSort?.map((it) => ({
                                         label: it.name,
                                         value: it.id,
                                     }))}
@@ -297,7 +305,7 @@ export default function Register() {
                                         label: it.name,
                                         value: it.name,
                                     }))}
-                                    placeholder="Country"
+                                    placeholder="State"
                                 />
                             </Form.Item>
 
@@ -339,12 +347,12 @@ export default function Register() {
                                     </span>
                                 }
                                 name="stage_name_1"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input Stage Name 1!",
-                                    },
-                                ]}
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: "Please input Stage Name 1!",
+                                //     },
+                                // ]}
                             >
                                 <Input placeholder="Stage Name 1" />
                             </Form.Item>

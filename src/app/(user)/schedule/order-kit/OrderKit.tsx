@@ -73,7 +73,7 @@ export default function ScheduleCreate() {
 
                             <div className="grid grid-cols-2 gap-3">
                                 {orderKits.map((item) => (
-                                    <OrderKitItem item={item} />
+                                    <OrderKitItem key={item.slug} item={item} />
                                 ))}
                             </div>
                         </div>

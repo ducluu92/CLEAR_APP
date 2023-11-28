@@ -7,6 +7,8 @@ import { SWRConfig } from "swr";
 
 interface ProvidersProps {
     children: React.ReactNode;
+    profile: IAccountProfile | null;
+    accessToken: string | null
 }
 
 function Providers(props: ProvidersProps) {
@@ -24,7 +26,7 @@ function Providers(props: ProvidersProps) {
                 // provider: () => new Map()
             }}
         >
-            <AccountProvider>
+            <AccountProvider profile={props.profile} accessToken={props.accessToken}> 
                 {props.children}
             </AccountProvider>
         </SWRConfig>

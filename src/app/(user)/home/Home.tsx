@@ -41,7 +41,7 @@ export default function Home() {
                             false
                         )}
                     </span>
-                    <h3 className="text-xl my-3  text-primary">Howdy, Test!</h3>
+                    <h3 className="text-xl my-3  text-primary">Howdy, {profile.first_name}!</h3>
                     <div className="space-y-3">
                         <div className="flex flex-row justify-between items-center shadow-md border-red-400 border-2 shadow-red-400 rounded-2xl p-4 bg-white">
                             <div>

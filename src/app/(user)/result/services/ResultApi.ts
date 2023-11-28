@@ -39,6 +39,13 @@ export default {
             params,
         });
     },
+    getLast(params: IBaseQueryParams): Promise<IDataResponse<IResult>> {
+        return request({
+            url: `${PATH}/last`,
+            method: "GET",
+            params,
+        });
+    },
     viewResult(resultId: number): Promise<any> {
         return request({
             url: `${PATH}/files/${resultId}`,

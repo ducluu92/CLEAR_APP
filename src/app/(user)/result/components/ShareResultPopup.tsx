@@ -1,9 +1,10 @@
 "use client";
 import { useAccountContext } from "@/contexts/AccountContext";
-import { Modal, QRCode, Skeleton } from "antd";
+import { Modal, QRCode, Skeleton, message } from "antd";
 import moment from "moment";
 import React, {
     useCallback,
+    useEffect,
     useImperativeHandle,
     useMemo,
     useState,
@@ -12,18 +13,44 @@ import Image from "next/image";
 import DateTimeUtils from "@/utils/DateTimeUtils";
 import BaseConstant from "@/constants/BaseConstant";
 import UrlUtils from "@/utils/UrlUtils";
+import ResultApi from "../services/ResultApi";
+import MessageUtils from "@/utils/MessageUtils";
 
 type Props = {
     item: any | null;
 };
 const ShareResultPopup = React.forwardRef((props: Props, ref) => {
-    const { profile }: { profile: IAccountProfile } = useAccountContext();
     const { item } = props;
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [detail, setDetail] = useState<IResult | null>(null);
 
+    const getLastResult = () => {
+        setIsLoading(true);
+        ResultApi.getLast({})
+            .then((res) => {
+                console.log(res);
+                if (res.success) {
+                    setDetail(res.data);
+                } else {
+                    message.error(res.errors?.message || "Error");
+                }
+            })
+            .catch((err) => {
+                MessageUtils.showResponseError(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+    useEffect(() => {
+        if (isOpen) {
+            getLastResult();
+        }
+    }, [isOpen]);
     const isClear = useMemo(() => {
-        if (profile?.result_latest) {
-            const lastResult = profile?.result_latest;
+        if (detail) {
+            const lastResult = detail;
             return (
                 moment(lastResult?.created_at)
                     .add(14, "days")
@@ -32,16 +59,16 @@ const ShareResultPopup = React.forwardRef((props: Props, ref) => {
             );
         }
         return false;
-    }, [profile]);
+    }, [detail]);
     const lastResultValidUntil = useMemo(() => {
-        if (profile?.result_latest) {
-            const lastResult = profile?.result_latest;
+        if (detail) {
+            const lastResult = detail;
             return DateTimeUtils.getDateTimeFull(
-                moment(lastResult.created_at).add(14, "days")
+                moment(lastResult.created_at).add(14, "days"), false
             );
         }
         return "";
-    }, [profile]);
+    }, [detail]);
 
     const present = useCallback(() => {
         setIsOpen(true);
@@ -63,31 +90,37 @@ const ShareResultPopup = React.forwardRef((props: Props, ref) => {
             onCancel={dismiss}
             footer={false}
         >
-            {profile ? (
+            {!isLoading ? (
                 <div className="text-center space-y-6">
                     <div className="text-gray-text">
                         <div className="text-lg ">
-                            First Name: {profile?.first_name}
+                            First Name: {detail?.user?.first_name}
                         </div>
                         <div className="text-xs ">
-                            Birth Year: {moment(profile?.dob).year()}
+                            Birth Year: {moment(detail?.user?.dob).year()}
                         </div>
                     </div>
                     <div className="rounded-xl shadow-lg p-5 flex flex-col justify-center items-center gap-2 cursor-pointer w-[200px] border-slate-50 border-[1px] m-auto">
                         {/* <QrcodeOutlined className="text-[120px]" /> */}
-                        {!!profile?.result_latest && (
-                            <QRCode value={`${UrlUtils.getCurrentDomain()}/public-result/${profile?.result_latest?.id}`} />
+                        {!!detail && (
+                            <QRCode
+                                value={`${UrlUtils.getCurrentDomain()}/public-result/${
+                                    detail?.id
+                                }`}
+                            />
                         )}
-                        <div className="flex flex-row space-y-2 items-center ">
+                        <div className="flex flex-row space-x-2 items-center justify-center ">
                             <Image
-                                width={30}
-                                height={38}
+                                width={38}
+                                height={30}
+                                className="h-7 w-5"
                                 src={"/drop-logo.png"}
                                 alt="Clear"
                             />
                             <Image
                                 width={100}
                                 height={30}
+                                className="h-7"
                                 src={"/clear-text.png"}
                                 alt="Clear"
                             />
@@ -103,13 +136,13 @@ const ShareResultPopup = React.forwardRef((props: Props, ref) => {
                             <p className="text-md">NOT CLEARED</p>
                         </div>
                     )}
-                    {!!profile.result_latest && (
+                    {!!detail && (
                         <div>
                             <p className="text-sm text-gray-text">LAST TEST:</p>
                             <p className="text-xs text-gray-text">
-                                {profile.result_latest
+                                {detail
                                     ? DateTimeUtils.getDateTimeFull(
-                                          profile.result_latest.created_at,
+                                          detail.created_at,
                                           false
                                       )
                                     : ""}

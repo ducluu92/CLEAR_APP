@@ -5,47 +5,50 @@ import Cookies from "js-cookie";
 import _ from "lodash";
 import BaseConstant from "@/constants/BaseConstant";
 import AccountApi from "@/app/(user)/menu/account/services/AccountApi";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import CookieUtils from "@/utils/CookieUtils";
 import { message } from "antd";
 import useAccountProfileSRW from "@/app/(user)/menu/account/hooks/useAccountProfileSRW";
 
 interface AccountContext {
     profile: any;
-    setProfile: React.Dispatch<React.SetStateAction<string | null>>;
+    // setProfile: React.Dispatch<React.SetStateAction<string | null>>;
     isLoggedIn: boolean;
 }
 
 interface AccountProviderProps {
     children?: React.ReactNode;
+    profile: IAccountProfile | null;
+    accessToken: string | null
 }
 
 const AccountContext = createContext<AccountContext | null>(null);
 
 export const AccountProvider = (props: AccountProviderProps) => {
-    const session: any = useSession();
+    // const session: any = useSession();
+    const {profile, accessToken} = props
     // const {data, isLoading, error} = useAccountProfileSRW()
-    const [profile, setProfile] = useState<any>();
+    // const [profile, setProfile] = useState<any>();
 
 
-    const getProfile = async () => {
-        try {
-            const profile = await AccountApi.getProfile();
-            console.log({ profile });
-            if (profile?.success) {
-                setProfile(profile?.data?.user);
-            } else {
-                message.error("Error when get usr profile");
-            }
-        } catch (err) {}
-    };
+    // const getProfile = async () => {
+    //     try {
+    //         const profile = await AccountApi.getProfile();
+    //         console.log({ profile });
+    //         if (profile?.success) {
+    //             setProfile(profile?.data?.user);
+    //         } else {
+    //             message.error("Error when get usr profile");
+    //         }
+    //     } catch (err) {}
+    // };
     useEffect(() => {
-        if (session?.data?.jwt) {
+        if (accessToken) {
             console.log("has token");
-            CookieUtils.setToken(session?.data?.jwt);
-            getProfile();
+            CookieUtils.setToken(accessToken);
+            // getProfile();
         }
-    }, [session]);
+    }, [accessToken]);
     // useEffect(() => {
     //     console.log(data, error)
     //     // if (data) {
@@ -57,7 +60,7 @@ export const AccountProvider = (props: AccountProviderProps) => {
         <AccountContext.Provider
             value={{
                 profile,
-                setProfile,
+                // setProfile,
                 isLoggedIn: !_.isNull(profile),
             }}
         >

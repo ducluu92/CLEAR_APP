@@ -92,8 +92,8 @@ service.interceptors.response.use(
             if (error.response.status === 401) {
                 signOut()
                     .then((res: any) => {
-                        // window?.location?.reload();
                         console.log("signOut", res);
+                        CookieUtils.setToken('')
                     })
                     .catch((err: any) => {
                         console.log("signOut err", err);

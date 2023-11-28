@@ -1,5 +1,6 @@
 "use client";
 import ButtonFill from "@/components/Button/ButtonFill";
+import { useAccountContext } from "@/contexts/AccountContext";
 import { Image } from "antd";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -9,13 +10,15 @@ type Props = {
     onClick?: () => void;
 };
 export default function OrderKitItem(props: Props) {
+    const {profile} = useAccountContext()
     const { item, onClick } = props;
     const router = useRouter();
     const pathname = usePathname();
     const handleChoose = () => {
-        const params = new URLSearchParams();
-        params.set('slug', item.slug)
-        router.push(`${pathname}?${params}`);
+        // const params = new URLSearchParams();
+        // params.set('slug', item.slug)
+        // router.push(`${pathname}?${params}`);
+        window.open(`https://www.getclrd.com/test-kit-payment?CLEARParProductSlug=${item.slug}&CLEARParFirstName=${profile?.first_name}&CLEARParLastName=${profile?.last_name}&CLEARParEmail=${profile?.email}&CLEARParPhone=${profile?.phone}`)
     };
     return (
         <div

@@ -107,7 +107,7 @@ export default {
             const year = date.year();
             const monthNum = MONTHS[month];
             const dayOfWeek = date.day();
-            return `${DAYS[dayOfWeek]}, ${monthNum} ${date.date()}, ${year} ${
+            return `${monthNum} ${date.date()}, ${year} ${
                 isShowTIme ? date.format(TIME_SERVER_RESPONSE) : ""
             }`;
         } catch {

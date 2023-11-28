@@ -54,7 +54,7 @@ const RootLayoutCli = ({
             <SessionProvider session={null}>
                 <StyledComponentsRegistry>
                     <ConfigProvider theme={themeConfig}>
-                        <Providers>{children}</Providers>
+                        {children}
                     </ConfigProvider>
                 </StyledComponentsRegistry>
             </SessionProvider>

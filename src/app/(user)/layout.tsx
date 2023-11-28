@@ -7,6 +7,12 @@ import { getServerSession } from "next-auth";
 import { authConfig } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import ActionButtons from "@/components/Layout/Header/omponents/ActionButtons";
+import backendRequest from "@/utils/BackendRequestUtils";
+import BackendAccountApi from "./menu/account/services/BackendAccountApi";
+import Providers from "@/contexts/Providers";
+import { profile } from "console";
+import UserLayoutCli from "@/components/Layout/UserLayoutCli";
+import { signOut } from "next-auth/react";
 
 export const metadata: Metadata = {
     title: "CLEAR App",
@@ -21,19 +27,20 @@ const UserLayout = async ({ children }: { children: React.ReactNode }) => {
     // const url = new URL(reqUrl);
     // const callback = url.pathname
     // console.log({ cookies, pathname, callback, a: JSON.stringify(headersList) });
-
-    if (!session) {
+    let profile = null;
+    if (session) {
+        profile = await BackendAccountApi.getProfile(session);
+        if (!profile || !profile?.success) {
+            signOut()
+            redirect("/");
+        }
+    } else {
         redirect("/");
     }
     return (
         <main className="flex h-screen flex-col justify-between ">
-            <ActionButtons/>
-
-            <div className="flex-1 bg-[#f5faff] p-3 overflow-auto">
-                {children}
-            </div>
-            <Menu />
-            {/* <UserLayout>{children}</UserLayout> */}
+            
+            <UserLayoutCli accessToken={session?.jwt} profile={profile?.data?.user}>{children}</UserLayoutCli>
         </main>
     );
 };
