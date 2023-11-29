@@ -10,9 +10,7 @@ import ActionButtons from "@/components/Layout/Header/omponents/ActionButtons";
 import backendRequest from "@/utils/BackendRequestUtils";
 import BackendAccountApi from "./menu/account/services/BackendAccountApi";
 import Providers from "@/contexts/Providers";
-import { profile } from "console";
 import UserLayoutCli from "@/components/Layout/UserLayoutCli";
-import { signOut } from "next-auth/react";
 
 export const metadata: Metadata = {
     title: "CLEAR App",
@@ -31,8 +29,7 @@ const UserLayout = async ({ children }: { children: React.ReactNode }) => {
     if (session) {
         profile = await BackendAccountApi.getProfile(session);
         if (!profile || !profile?.success) {
-            signOut()
-            redirect("/");
+            // redirect('/api/logout')
         }
     } else {
         redirect("/");

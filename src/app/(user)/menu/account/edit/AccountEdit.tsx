@@ -25,9 +25,13 @@ import ButtonFill from "@/components/Button/ButtonFill";
 import moment from "moment";
 import { PATH_ACCOUNT } from "../Account";
 import AccountApi from "../services/AccountApi";
-export const PATH_ACCOUNT_EDIT = '/menu/account/edit'
+export const PATH_ACCOUNT_EDIT = "/menu/account/edit";
 export default function MyAccount() {
-    const { profile }: { profile: IAccountProfile } = useAccountContext();
+    const {
+        profile,
+        reloadProfile,
+    }: { profile: IAccountProfile; reloadProfile: () => void } =
+        useAccountContext();
     const [form] = Form.useForm();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,15 +53,14 @@ export default function MyAccount() {
                 ...params,
                 dob: params.dob.format(DATE_SERVER_FORMAT),
             };
-            const loginRes = await AccountApi.updateProfile(data);
-            console.log({ loginRes });
-            if (loginRes && loginRes.success) {
-                message.success(
-                    "Update profile success!"
-                );
-                router.back()
+            const res = await AccountApi.updateProfile(data);
+            console.log({ res });
+            if (res && res.success) {
+                message.success("Update profile success!");
+                reloadProfile();
+                router.back();
             } else {
-                MessageUtils.showResponseError(loginRes?.errors);
+                MessageUtils.showResponseError(res?.errors);
             }
         } catch (err: any) {
             MessageUtils.showResponseError(err);

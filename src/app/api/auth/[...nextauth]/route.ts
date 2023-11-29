@@ -59,6 +59,7 @@ export const authConfig: AuthOptions = {
     ],
     pages: {
         signIn: "/auth/login",
+        signOut: "/logout"
     },
     // debug: process.env.NODE_ENV === "development",
     callbacks: {

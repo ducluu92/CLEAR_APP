@@ -28,6 +28,7 @@ interface IAuthRegisterRequest {
     is_active?: number;
     password: string;
     password_confirmation: string;
+    terms: any;
 }
 
 interface IAuthVerifyRequest {

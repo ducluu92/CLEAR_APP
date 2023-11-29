@@ -21,6 +21,7 @@ type Props = {
 };
 const ShareResultPopup = React.forwardRef((props: Props, ref) => {
     const { item } = props;
+    const { profile } = useAccountContext();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [detail, setDetail] = useState<IResult | null>(null);
@@ -64,7 +65,8 @@ const ShareResultPopup = React.forwardRef((props: Props, ref) => {
         if (detail) {
             const lastResult = detail;
             return DateTimeUtils.getDateTimeFull(
-                moment(lastResult.created_at).add(14, "days"), false
+                moment(lastResult.created_at).add(14, "days"),
+                false
             );
         }
         return "";
@@ -94,20 +96,24 @@ const ShareResultPopup = React.forwardRef((props: Props, ref) => {
                 <div className="text-center space-y-6">
                     <div className="text-gray-text">
                         <div className="text-lg ">
-                            First Name: {detail?.user?.first_name}
+                            First Name: {profile?.first_name}
                         </div>
                         <div className="text-xs ">
-                            Birth Year: {moment(detail?.user?.dob).year()}
+                            Birth Year: {moment(profile?.dob).year()}
                         </div>
                     </div>
                     <div className="rounded-xl shadow-lg p-5 flex flex-col justify-center items-center gap-2 cursor-pointer w-[200px] border-slate-50 border-[1px] m-auto">
                         {/* <QrcodeOutlined className="text-[120px]" /> */}
-                        {!!detail && (
+                        {!!detail ? (
                             <QRCode
                                 value={`${UrlUtils.getCurrentDomain()}/public-result/${
                                     detail?.id
                                 }`}
                             />
+                        ) : (
+                            <p className="text-xs text-gray-text py-6">
+                                No recent results to share
+                            </p>
                         )}
                         <div className="flex flex-row space-x-2 items-center justify-center ">
                             <Image
@@ -126,29 +132,37 @@ const ShareResultPopup = React.forwardRef((props: Props, ref) => {
                             />
                         </div>
                     </div>
-                    {isClear ? (
-                        <div className="text-green-500">
-                            <p className="text-md">CLEARED UNTIL</p>
-                            <p className="text-sm">{lastResultValidUntil}</p>
-                        </div>
-                    ) : (
-                        <div className="text-red-500">
-                            <p className="text-md">NOT CLEARED</p>
-                        </div>
-                    )}
                     {!!detail && (
-                        <div>
-                            <p className="text-sm text-gray-text">LAST TEST:</p>
-                            <p className="text-xs text-gray-text">
-                                {detail
-                                    ? DateTimeUtils.getDateTimeFull(
-                                          detail.created_at,
-                                          false
-                                      )
-                                    : ""}
-                            </p>
-                        </div>
+                        <>
+                            {isClear ? (
+                                <div className="text-green-500">
+                                    <p className="text-md">CLEARED UNTIL</p>
+                                    <p className="text-sm">
+                                        {lastResultValidUntil}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="text-red-500">
+                                    <p className="text-md">NOT CLEARED</p>
+                                </div>
+                            )}
+
+                            <div>
+                                <p className="text-sm text-gray-text">
+                                    LAST TEST:
+                                </p>
+                                <p className="text-xs text-gray-text">
+                                    {detail
+                                        ? DateTimeUtils.getDateTimeFull(
+                                              detail.created_at,
+                                              false
+                                          )
+                                        : ""}
+                                </p>
+                            </div>
+                        </>
                     )}
+
                     <a
                         className="text-blue-400 text-sm block"
                         href="https://www.getclrd.com/faq?questionId=af5102a9-4e4b-47a8-abd9-9e25ea12092b&appDefId=14c92d28-031e-7910-c9a8-a670011e062d"
