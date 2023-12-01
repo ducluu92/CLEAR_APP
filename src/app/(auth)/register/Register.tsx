@@ -18,7 +18,7 @@ import ReCaptchaConstant from "@/constants/ReCaptchaConstant";
 export default function Register() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isFinished, setIsFinished] = useState<boolean>(true);
+    const [isFinished, setIsFinished] = useState<boolean>(false);
     const [captcha, setCaptcha] = useState<string|null>(null);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const { data: countries } = useCatalogSWR(CatalogConstant.TYPE_COUNTRIES);

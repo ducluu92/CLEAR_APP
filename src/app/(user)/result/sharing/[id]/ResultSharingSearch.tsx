@@ -14,6 +14,8 @@ import QRGuide from "../../components/QRGuide";
 import ResultApi from "../../services/ResultApi";
 import MessageUtils from "@/utils/MessageUtils";
 import nProgress from "nprogress";
+import SWRUtils from "@/utils/SWRUtils";
+import { SWR_RESULT_SHARE_USER_LIST } from "../../hooks/useResultShareUserListSRW";
 
 export const PATH_RESULT_SHARE = "/result/sharing";
 export default function ResultSharingSearch() {
@@ -72,6 +74,7 @@ export default function ResultSharingSearch() {
                 .then((res) => {
                     console.log(res);
                     message.success("Success");
+                    SWRUtils.mutatePagination(SWR_RESULT_SHARE_USER_LIST)
                     router.back();
                 })
                 .catch((err) => {

@@ -47,7 +47,7 @@ const RootLayoutCli = ({
         };
     }, [searchParams, pathname]);
     return (
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-lg mx-auto px-2">
             <div id="globalLoader">
                 <img src="/image/spinner.gif" alt="" />
             </div>

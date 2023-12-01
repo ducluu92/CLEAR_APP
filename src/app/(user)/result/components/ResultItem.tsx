@@ -5,6 +5,7 @@ import React from "react";
 import ResultApi from "../services/ResultApi";
 import { useRouter } from "next/navigation";
 import { PATH_RESULT } from "../Result";
+import DateTimeUtils from "@/utils/DateTimeUtils";
 
 type Props = {
     item: IResult;
@@ -36,8 +37,7 @@ export default function ResultItem(props: Props) {
                             />
 
                             <div className="text-[13px] text-black-text">
-                                {" "}
-                                November 21, 2023{" "}
+                                {DateTimeUtils.getDateTimeFull(item?.share_date, false)}
                             </div>
                         </div>
 
