@@ -8,7 +8,7 @@ export default function QRGuide() {
     const resultModalRef = useRef<ModalRefProp>(null);
     return (
         <>
-            <div
+            {/* <div
                 onClick={() => {
                     resultModalRef?.current?.present();
                 }}
@@ -25,7 +25,7 @@ export default function QRGuide() {
                     </p>
                 </div>
             </div>
-            <ShareResultPopup item={{}} ref={resultModalRef} />
+            <ShareResultPopup item={{}} ref={resultModalRef} /> */}
         </>
     );
 }

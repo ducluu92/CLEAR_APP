@@ -105,11 +105,12 @@ const ShareResultPopup = React.forwardRef((props: Props, ref) => {
                     <div className="rounded-xl shadow-lg p-5 flex flex-col justify-center items-center gap-2 cursor-pointer w-[200px] border-slate-50 border-[1px] m-auto">
                         {/* <QrcodeOutlined className="text-[120px]" /> */}
                         {!!detail ? (
-                            <QRCode
-                                value={`${UrlUtils.getCurrentDomain()}/public-result/${
-                                    detail?.id
-                                }`}
-                            />
+                            <></>
+                            // <QRCode
+                            //     value={`${UrlUtils.getCurrentDomain()}/public-result/${
+                            //         detail?.id
+                            //     }`}
+                            // />
                         ) : (
                             <p className="text-xs text-gray-text py-6">
                                 No recent results to share
