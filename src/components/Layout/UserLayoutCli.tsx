@@ -28,6 +28,7 @@ export default function UserLayoutCli({
                 </div>
             </Providers>
             <Menu />
+            <script src="//code.jivosite.com/widget/ELMMCKvWKE" async></script>
         </>
     );
 }
